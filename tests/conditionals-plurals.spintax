@@ -1,0 +1,35 @@
+// SYNTAX TEST "source.spintax" "conditionals + plurals, incl. strict discriminators"
+
+  {?VAR?yes|no}
+//^ punctuation.section.braces.begin.spintax
+// ^ keyword.operator.conditional.spintax
+//  ^^^ variable.other.conditional.spintax
+//     ^ punctuation.separator.query.spintax
+//         ^ punctuation.separator.spintax
+//            ^ punctuation.section.braces.end.spintax
+
+  {?!VAR?a}
+// ^ keyword.operator.conditional.spintax
+//  ^ keyword.operator.negation.spintax
+//   ^^^ variable.other.conditional.spintax
+
+  {??x}
+// ^ - keyword.operator.conditional.spintax
+// ^ meta.enumeration.spintax
+
+  {?1bad?x}
+// ^ - keyword.operator.conditional.spintax
+// ^ meta.enumeration.spintax
+
+  {plural %n%: a|b}
+// ^^^^^^ keyword.control.plural.spintax
+//        ^^^ variable.other.spintax
+//           ^ punctuation.separator.key-value.spintax
+//              ^ punctuation.separator.spintax
+
+  {plural noun}
+// ^ - keyword.control.plural.spintax
+// ^ meta.enumeration.spintax
+
+  {plural: x}
+// ^ - keyword.control.plural.spintax

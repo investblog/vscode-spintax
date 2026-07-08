@@ -1,0 +1,165 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Spintax",
+  "scopeName": "source.spintax",
+  "fileTypes": ["spintax", "gtw"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#directives" },
+    { "include": "#vars" },
+    { "include": "#conditionals" },
+    { "include": "#plurals" },
+    { "include": "#enumerations" },
+    { "include": "#permutations" }
+  ],
+  "repository": {
+    "nested": {
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#vars" },
+        { "include": "#conditionals" },
+        { "include": "#plurals" },
+        { "include": "#enumerations" },
+        { "include": "#permutations" }
+      ]
+    },
+
+    "pipe": {
+      "match": "\\|",
+      "name": "punctuation.separator.spintax"
+    },
+
+    "comments": {
+      "name": "comment.block.spintax",
+      "begin": "/#",
+      "beginCaptures": { "0": { "name": "punctuation.definition.comment.begin.spintax" } },
+      "end": "#/",
+      "endCaptures": { "0": { "name": "punctuation.definition.comment.end.spintax" } }
+    },
+
+    "directives": {
+      "patterns": [
+        {
+          "match": "^([ \\t]*)(#set)[ \\t]+(%[A-Za-z0-9_]+%)[ \\t]*(=)",
+          "captures": {
+            "2": { "name": "keyword.control.directive.set.spintax" },
+            "3": { "name": "entity.name.variable.spintax" },
+            "4": { "name": "keyword.operator.assignment.spintax" }
+          }
+        },
+        {
+          "match": "^([ \\t]*)(#include)[ \\t]+(\"[^\"]*\")",
+          "captures": {
+            "2": { "name": "keyword.control.directive.include.spintax" },
+            "3": { "name": "string.quoted.double.include.spintax" }
+          }
+        }
+      ]
+    },
+
+    "vars": {
+      "match": "%[A-Za-z0-9_]+%",
+      "name": "variable.other.spintax"
+    },
+
+    "conditionals": {
+      "begin": "(\\{)(\\?)(!?)([A-Za-z_][A-Za-z0-9_]*)(\\?)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.section.braces.begin.spintax" },
+        "2": { "name": "keyword.operator.conditional.spintax" },
+        "3": { "name": "keyword.operator.negation.spintax" },
+        "4": { "name": "variable.other.conditional.spintax" },
+        "5": { "name": "punctuation.separator.query.spintax" }
+      },
+      "end": "\\}",
+      "endCaptures": { "0": { "name": "punctuation.section.braces.end.spintax" } },
+      "name": "meta.conditional.spintax",
+      "patterns": [
+        { "include": "#pipe" },
+        { "include": "#nested" }
+      ]
+    },
+
+    "plurals": {
+      "begin": "(\\{)(plural)(?= [^{}]*:)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.section.braces.begin.spintax" },
+        "2": { "name": "keyword.control.plural.spintax" }
+      },
+      "end": "\\}",
+      "endCaptures": { "0": { "name": "punctuation.section.braces.end.spintax" } },
+      "name": "meta.plural.spintax",
+      "patterns": [
+        { "match": "%[A-Za-z0-9_]+%", "name": "variable.other.spintax" },
+        { "match": "\\b\\d+\\b", "name": "constant.numeric.spintax" },
+        { "match": ":", "name": "punctuation.separator.key-value.spintax" },
+        { "include": "#pipe" }
+      ]
+    },
+
+    "enumerations": {
+      "begin": "\\{",
+      "beginCaptures": { "0": { "name": "punctuation.section.braces.begin.spintax" } },
+      "end": "\\}",
+      "endCaptures": { "0": { "name": "punctuation.section.braces.end.spintax" } },
+      "name": "meta.enumeration.spintax",
+      "patterns": [
+        { "include": "#pipe" },
+        { "include": "#nested" }
+      ]
+    },
+
+    "permutations": {
+      "begin": "\\[",
+      "beginCaptures": { "0": { "name": "punctuation.section.brackets.begin.spintax" } },
+      "end": "\\]",
+      "endCaptures": { "0": { "name": "punctuation.section.brackets.end.spintax" } },
+      "name": "meta.permutation.spintax",
+      "patterns": [
+        { "include": "#perm-config" },
+        { "include": "#perm-trailing-sep" },
+        { "include": "#pipe" },
+        { "include": "#nested" }
+      ]
+    },
+
+    "perm-config": {
+      "patterns": [
+        {
+          "comment": "key=value config, anchored (\\G) to the very start of the permutation body",
+          "begin": "\\G<(?=[^<>]*\\b(?:minsize|maxsize|sep|lastsep)\\s*=)",
+          "beginCaptures": { "0": { "name": "punctuation.section.angle.begin.spintax" } },
+          "end": ">",
+          "endCaptures": { "0": { "name": "punctuation.section.angle.end.spintax" } },
+          "name": "meta.permutation.config.spintax",
+          "patterns": [
+            { "match": "\\b(?:minsize|maxsize|sep|lastsep)\\b", "name": "variable.parameter.spintax" },
+            { "match": "=", "name": "keyword.operator.assignment.spintax" },
+            { "match": "\"[^\"]*\"", "name": "string.quoted.double.spintax" },
+            { "match": "\\d+", "name": "constant.numeric.spintax" },
+            { "match": ";", "name": "punctuation.separator.config.spintax" }
+          ]
+        },
+        {
+          "comment": "Leading single-separator <X>, start-anchored. A separator UNLESS X is an HTML start tag: self-closing <x/>, or <tag …> with a matching </tag> before the ']' (engine looksLikeHtmlStartTag). So <, >, <->, and <and> (no </and>) ARE separators; <li>…</li> and <a href=…>…</a> are not.",
+          "match": "\\G(<)(?!([A-Za-z][A-Za-z0-9-]*)(?:\\s+[^>]*)?(?:/>|>[^\\]]*</\\2\\s*>))([^<>]*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.section.angle.begin.spintax" },
+            "3": { "name": "string.unquoted.separator.spintax" },
+            "4": { "name": "punctuation.section.angle.end.spintax" }
+          }
+        }
+      ]
+    },
+
+    "perm-trailing-sep": {
+      "comment": "Per-element trailing separator <X> right before '|' or ']' (engine extractTrailingSep). A separator unless X is </x>, <x/>, or <tag …> (tag-with-attrs). Note bare <li> trailing IS a separator here — unlike a leading <li>…</li>.",
+      "match": "(<)(?!/)(?![A-Za-z][A-Za-z0-9]*\\s)([^<>]*[^<>/])(>)(?=[ \\t]*[|\\]])",
+      "captures": {
+        "1": { "name": "punctuation.section.angle.begin.spintax" },
+        "2": { "name": "string.unquoted.separator.spintax" },
+        "3": { "name": "punctuation.section.angle.end.spintax" }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+name: Publish
+
+# Manual publish to the VS Code Marketplace. Before the first run:
+#   1. Create a Marketplace publisher and set its id as "publisher" in package.json.
+#   2. Add a repository secret VSCE_PAT (Azure DevOps Personal Access Token,
+#      Marketplace > Manage scope). Optionally OVSX_PAT for Open VSX.
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm test
+      - name: Publish to VS Code Marketplace
+        run: npx vsce publish
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      # Optional — also publish to Open VSX (VSCodium):
+      # - name: Publish to Open VSX
+      #   run: npx ovsx publish -p ${{ secrets.OVSX_PAT }}

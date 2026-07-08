@@ -1,0 +1,20 @@
+// SYNTAX TEST "source.spintax" "core constructs"
+
+  {a|b} %x%
+//^ punctuation.section.braces.begin.spintax
+//  ^ punctuation.separator.spintax
+//    ^ punctuation.section.braces.end.spintax
+//      ^^^ variable.other.spintax
+
+  #set %v% = x
+//^^^^ keyword.control.directive.set.spintax
+//     ^^^ entity.name.variable.spintax
+//         ^ keyword.operator.assignment.spintax
+
+  #include "s"
+//^^^^^^^^ keyword.control.directive.include.spintax
+//         ^^^ string.quoted.double.include.spintax
+
+  /# hi #/
+//^^ punctuation.definition.comment.begin.spintax
+//   ^ comment.block.spintax

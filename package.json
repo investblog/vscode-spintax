@@ -1,0 +1,59 @@
+{
+  "name": "spintax",
+  "displayName": "Spintax",
+  "description": "Syntax highlighting for spintax templates — {a|b|c}, [<config>a|b], %vars%, #set/#include, {?VAR?…} conditionals, and {plural N: …} plurals.",
+  "version": "1.0.0",
+  "publisher": "spintax",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "spintax",
+    "text-spinning",
+    "gtw",
+    "content-generation",
+    "seo"
+  ],
+  "homepage": "https://spintax.net",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/investblog/vscode-spintax"
+  },
+  "bugs": {
+    "url": "https://github.com/investblog/vscode-spintax/issues"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "spintax",
+        "aliases": [
+          "Spintax",
+          "spintax"
+        ],
+        "extensions": [
+          ".spintax",
+          ".gtw"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "spintax",
+        "scopeName": "source.spintax",
+        "path": "./syntaxes/spintax.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "vscode-tmgrammar-test \"tests/**/*.spintax\""
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.9.2",
+    "vscode-tmgrammar-test": "^0.1.3"
+  }
+}

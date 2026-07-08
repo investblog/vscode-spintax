@@ -1,0 +1,39 @@
+// SYNTAX TEST "source.spintax" "permutation config vs HTML content"
+
+  [<minsize=2;sep=", ">a|b]
+// ^ punctuation.section.angle.begin.spintax
+//  ^^^^^^^ variable.parameter.spintax
+//         ^ keyword.operator.assignment.spintax
+//          ^ constant.numeric.spintax
+//           ^ punctuation.separator.config.spintax
+//                ^^^^ string.quoted.double.spintax
+
+  [<, >a|b]
+// ^ punctuation.section.angle.begin.spintax
+//  ^^ string.unquoted.separator.spintax
+
+  [<li>a</li>|b]
+// ^ - meta.permutation.config.spintax
+// ^ - punctuation.section.angle.begin.spintax
+// ^ - string.unquoted.separator.spintax
+//  ^ meta.permutation.spintax
+
+  [<a href="/x">z</a>|b]
+// ^ - meta.permutation.config.spintax
+// ^ - punctuation.section.angle.begin.spintax
+// ^ - string.unquoted.separator.spintax
+
+  [<and>a|b]
+// ^ punctuation.section.angle.begin.spintax
+//  ^^^ string.unquoted.separator.spintax
+//     ^ punctuation.section.angle.end.spintax
+
+  [a<, >|b]
+//  ^ punctuation.section.angle.begin.spintax
+//   ^^ string.unquoted.separator.spintax
+//     ^ punctuation.section.angle.end.spintax
+
+  [a<and>|b]
+//  ^ punctuation.section.angle.begin.spintax
+//   ^^^ string.unquoted.separator.spintax
+//      ^ punctuation.section.angle.end.spintax
