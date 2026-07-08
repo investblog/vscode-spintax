@@ -3,7 +3,7 @@
   "displayName": "Spintax",
   "description": "Syntax highlighting for spintax templates — {a|b|c}, [<config>a|b], %vars%, #set/#include, {?VAR?…} conditionals, and {plural N: …} plurals.",
   "version": "1.0.0",
-  "publisher": "spintax",
+  "publisher": "301st",
   "license": "MIT",
   "engines": {
     "vscode": "^1.75.0"

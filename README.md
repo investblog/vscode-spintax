@@ -1,5 +1,7 @@
 # Spintax for VS Code
 
+[![Version](https://img.shields.io/visual-studio-marketplace/v/301st.spintax?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=301st.spintax)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/301st.spintax)](https://marketplace.visualstudio.com/items?itemName=301st.spintax)
 [![CI](https://github.com/investblog/vscode-spintax/actions/workflows/ci.yml/badge.svg)](https://github.com/investblog/vscode-spintax/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
@@ -28,6 +30,13 @@ contract and verified headlessly with `vscode-tmgrammar-test`. Applies to `.spin
 Ships with [<minsize=2;maxsize=3;sep=", ";lastsep=" and ">SSO|audit logs|alerts]{?free? — free tier available|}.
 You have %n% {plural %n%: message|messages}.
 ```
+
+## Install
+
+- **Marketplace:** open the Extensions view (<kbd>Ctrl/Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>),
+  search **Spintax**, and install — or run `code --install-extension 301st.spintax`.
+- **From VSIX:** download the `.vsix` from the [latest release](https://github.com/investblog/vscode-spintax/releases/latest)
+  and run **Extensions: Install from VSIX…**.
 
 ## Features
 
