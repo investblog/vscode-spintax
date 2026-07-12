@@ -3,6 +3,15 @@
 All notable changes to the Spintax VS Code extension are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.1 — 2026-07-12
+
+### Changed
+
+- Added an extension icon (`images/icon.png`) for the Marketplace listing.
+- Replaced the retired shields.io Marketplace badges with `vsmarketplacebadges.dev`.
+- Rewrote the constructs table as HTML so pipes in examples render correctly on the
+  Marketplace (the Markdown renderer showed literal `\|` escapes).
+
 ## 1.0.0 — 2026-07-08
 
 First release. Engine-accurate TextMate grammar for the full spintax surface, matching the

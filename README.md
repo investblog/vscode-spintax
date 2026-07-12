@@ -1,7 +1,7 @@
 # Spintax for VS Code
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/301st.spintax?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=301st.spintax)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/301st.spintax)](https://marketplace.visualstudio.com/items?itemName=301st.spintax)
+[![Version](https://vsmarketplacebadges.dev/version-short/301st.spintax.svg?label=Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=301st.spintax)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/301st.spintax.svg?color=blue)](https://marketplace.visualstudio.com/items?itemName=301st.spintax)
 [![CI](https://github.com/investblog/vscode-spintax/actions/workflows/ci.yml/badge.svg)](https://github.com/investblog/vscode-spintax/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
@@ -10,16 +10,19 @@ engine-accurate against the [`@spintax/core`](https://www.npmjs.com/package/@spi
 contract and verified headlessly with `vscode-tmgrammar-test`. Applies to `.spintax` and
 `.gtw` files.
 
-| Construct | Example |
-| --- | --- |
-| Enumeration | `{a\|b\|c}` |
-| Permutation | `[<minsize=2;maxsize=3;sep=", ">a\|b\|c]` |
-| Variable | `%name%` |
-| Local set | `#set %name% = value` |
-| Include | `#include "slug-or-id"` |
-| Conditional | `{?VAR?then\|else}` · `{?!VAR?…}` |
-| Plural | `{plural %n%: one\|few\|many}` |
-| Comment | `/# … #/` |
+<table>
+<thead><tr><th>Construct</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Enumeration</td><td><code>{a|b|c}</code></td></tr>
+<tr><td>Permutation</td><td><code>[&lt;minsize=2;maxsize=3;sep=", "&gt;a|b|c]</code></td></tr>
+<tr><td>Variable</td><td><code>%name%</code></td></tr>
+<tr><td>Local set</td><td><code>#set %name% = value</code></td></tr>
+<tr><td>Include</td><td><code>#include "slug-or-id"</code></td></tr>
+<tr><td>Conditional</td><td><code>{?VAR?then|else}</code> · <code>{?!VAR?…}</code></td></tr>
+<tr><td>Plural</td><td><code>{plural %n%: one|few|many}</code></td></tr>
+<tr><td>Comment</td><td><code>/# … #/</code></td></tr>
+</tbody>
+</table>
 
 ## Example
 

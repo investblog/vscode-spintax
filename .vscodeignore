@@ -4,3 +4,4 @@ node_modules/**
 .gitignore
 .vscodeignore
 **/*.map
+images/*.svg
