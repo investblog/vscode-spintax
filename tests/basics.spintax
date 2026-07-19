@@ -21,6 +21,18 @@
 //     ^^^ entity.name.variable.spintax
 //         ^ keyword.operator.assignment.spintax
 
+  #define %v% = x
+//^^^^^^^ - keyword.control.directive.def.spintax
+
+  #def %v = x
+//^^^^ - keyword.control.directive.def.spintax
+
+  text #def %v% = x
+//     ^^^^ - keyword.control.directive.def.spintax
+
+  #DEF %v% = x
+//^^^^ - keyword.control.directive.def.spintax
+
   #include "s"
 //^^^^^^^^ keyword.control.directive.include.spintax
 //         ^^^ string.quoted.double.include.spintax
