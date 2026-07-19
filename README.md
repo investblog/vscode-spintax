@@ -16,7 +16,8 @@ contract and verified headlessly with `vscode-tmgrammar-test`. Applies to `.spin
 <tr><td>Enumeration</td><td><code>{a|b|c}</code></td></tr>
 <tr><td>Permutation</td><td><code>[&lt;minsize=2;maxsize=3;sep=", "&gt;a|b|c]</code></td></tr>
 <tr><td>Variable</td><td><code>%name%</code></td></tr>
-<tr><td>Local set</td><td><code>#set %name% = value</code></td></tr>
+<tr><td>Local set</td><td><code>#set %name% = value</code> &mdash; macro, re-rolled at every reference</td></tr>
+<tr><td>Local def</td><td><code>#def %name% = value</code> &mdash; resolved once per render, held everywhere</td></tr>
 <tr><td>Include</td><td><code>#include "slug-or-id"</code></td></tr>
 <tr><td>Conditional</td><td><code>{?VAR?then|else}</code> · <code>{?!VAR?…}</code></td></tr>
 <tr><td>Plural</td><td><code>{plural %n%: one|few|many}</code></td></tr>
@@ -29,6 +30,7 @@ contract and verified headlessly with `vscode-tmgrammar-test`. Applies to `.spin
 ```spintax
 /# hero block #/
 #set %product% = Acme
+#def %tone% = {friendly|warm}
 {Welcome to|Meet} %product% — %tagline%, trusted since {2019|2020}.
 Ships with [<minsize=2;maxsize=3;sep=", ";lastsep=" and ">SSO|audit logs|alerts]{?free? — free tier available|}.
 You have %n% {plural %n%: message|messages}.

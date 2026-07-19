@@ -11,6 +11,16 @@
 //     ^^^ entity.name.variable.spintax
 //         ^ keyword.operator.assignment.spintax
 
+  #def %v% = x
+//^^^^ keyword.control.directive.def.spintax
+//     ^^^ entity.name.variable.spintax
+//         ^ keyword.operator.assignment.spintax
+
+  #def %v% =
+//^^^^ keyword.control.directive.def.spintax
+//     ^^^ entity.name.variable.spintax
+//         ^ keyword.operator.assignment.spintax
+
   #include "s"
 //^^^^^^^^ keyword.control.directive.include.spintax
 //         ^^^ string.quoted.double.include.spintax

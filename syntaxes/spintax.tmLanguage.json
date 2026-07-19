@@ -48,6 +48,14 @@
           }
         },
         {
+          "match": "^([ \\t]*)(#def)[ \\t]+(%[A-Za-z0-9_]+%)[ \\t]*(=)",
+          "captures": {
+            "2": { "name": "keyword.control.directive.def.spintax" },
+            "3": { "name": "entity.name.variable.spintax" },
+            "4": { "name": "keyword.operator.assignment.spintax" }
+          }
+        },
+        {
           "match": "^([ \\t]*)(#include)[ \\t]+(\"[^\"]*\")",
           "captures": {
             "2": { "name": "keyword.control.directive.include.spintax" },

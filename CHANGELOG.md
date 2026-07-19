@@ -3,6 +3,19 @@
 All notable changes to the Spintax VS Code extension are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.1.0 — 2026-07-19
+
+### Added
+
+- Highlighting for the `#def` directive, shipped in Spintax engine 3.0.0 /
+  `@spintax/core` 0.3.0. It shares `#set`'s line-anchored shape
+  (`#def %name% = value`) but different semantics: `#set` is a macro whose value is
+  re-substituted and re-rolled at every reference, while `#def` resolves once per
+  render and holds that result everywhere.
+- `#def` gets its own scope, `keyword.control.directive.def.spintax`, rather than
+  sharing `#set`'s. The two directives mean genuinely different things, so a theme
+  must be able to colour them apart.
+
 ## 1.0.1 — 2026-07-12
 
 ### Changed
