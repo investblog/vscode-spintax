@@ -33,6 +33,13 @@
   #DEF %v% = x
 //^^^^ - keyword.control.directive.def.spintax
 
+  {alpha|
+//^ punctuation.section.braces.begin.spintax
+  #def %inner% = ZZZ
+//^^^^ keyword.control.directive.def.spintax
+//     ^^^^^^^ entity.name.variable.spintax
+  beta}
+
   #include "s"
 //^^^^^^^^ keyword.control.directive.include.spintax
 //         ^^^ string.quoted.double.include.spintax

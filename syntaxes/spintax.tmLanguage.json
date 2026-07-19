@@ -16,6 +16,7 @@
     "nested": {
       "patterns": [
         { "include": "#comments" },
+        { "include": "#directives" },
         { "include": "#vars" },
         { "include": "#conditionals" },
         { "include": "#plurals" },
