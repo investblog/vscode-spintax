@@ -7,12 +7,17 @@ name: Publish
 # apart. workflow_dispatch stays as a manual fallback for re-running after a
 # transient Marketplace failure.
 #
-# Required repository secret:
-#   VSCE_PAT  — Azure DevOps Personal Access Token, scope Marketplace > Manage,
-#               Organization = "All accessible organizations". A PAT scoped to a
-#               single organization authenticates but cannot publish.
-# Optional:
-#   OVSX_PAT  — Open VSX token. The step is skipped when the secret is absent.
+# Secrets are OPTIONAL. With none set, this still builds the .vsix and attaches
+# it to a GitHub Release; only the Marketplace upload is skipped.
+#
+#   VSCE_PAT  — Azure DevOps PAT, scope Marketplace > Manage, Organization =
+#               "All accessible organizations". Note before investing in this:
+#               creating a PAT needs an Azure DevOps organization, creating an
+#               organization now needs a non-trial Azure subscription, and the
+#               "all organizations" (global) PAT this requires is retired on
+#               2026-12-01. Microsoft's replacement is Entra ID workload identity
+#               federation, documented for Azure Pipelines rather than Actions.
+#   OVSX_PAT  — Open VSX token. Skipped when absent.
 
 on:
   push:
@@ -27,6 +32,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
       OVSX_PAT: ${{ secrets.OVSX_PAT }}
     steps:
       - uses: actions/checkout@v4
@@ -60,10 +66,17 @@ jobs:
       - name: Package
         run: npx vsce package --out "spintax-${{ env.version }}.vsix"
 
+      # Skipped, not failed, when the secret is absent: the Release below is the
+      # part that works with no credentials at all, and it is worth having on its
+      # own. See the PAT note in the header for why this secret may never be set.
       - name: Publish to VS Code Marketplace
+        if: env.VSCE_PAT != ''
         run: npx vsce publish --packagePath "spintax-${{ env.version }}.vsix"
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Marketplace publish skipped
+        if: env.VSCE_PAT == ''
+        run: |
+          echo "::notice::VSCE_PAT is not set — the .vsix was built and attached to the Release, but nothing was published to the Marketplace. Upload it manually at https://marketplace.visualstudio.com/manage/publishers/301st"
 
       - name: Publish to Open VSX
         if: env.OVSX_PAT != ''
