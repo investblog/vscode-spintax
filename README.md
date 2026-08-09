@@ -4,11 +4,17 @@
 [![Installs](https://vsmarketplacebadges.dev/installs-short/301st.spintax.svg?color=blue)](https://marketplace.visualstudio.com/items?itemName=301st.spintax)
 [![CI](https://github.com/investblog/vscode-spintax/actions/workflows/ci.yml/badge.svg)](https://github.com/investblog/vscode-spintax/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Spintax Studio](https://img.shields.io/badge/Spintax_Studio-Microsoft_Store-0078D4)](https://apps.microsoft.com/detail/9mw3ch7b530p)
 
 Syntax highlighting for [**spintax**](https://spintax.net) templates in Visual Studio Code —
 engine-accurate against the [`@spintax/core`](https://www.npmjs.com/package/@spintax/core)
 contract and verified headlessly with `vscode-tmgrammar-test`. Applies to `.spintax` and
 `.gtw` files.
+
+> Prefer a dedicated workspace? [**Spintax Studio**](https://apps.microsoft.com/detail/9mw3ch7b530p)
+> is a native desktop editor for spintax — source and live preview side by side, validation
+> with precise diagnostics, variant generation and export — built on the same engine this
+> grammar is measured against ([source](https://github.com/investblog/spintax-studio)).
 
 <table>
 <thead><tr><th>Construct</th><th>Example</th></tr></thead>
@@ -47,9 +53,16 @@ You have %n% {plural %n%: message|messages}.
 
 - Full, engine-accurate tokenization of every spintax construct, including nested spintax
   inside conditional branches and enumerations.
-- **Correct permutation config:** `<minsize=…;sep=…>` is config, while HTML inside items
-  (`[<li>a</li>|b]`, `[<a href="/x">…</a>|b]`) is content — not mis-highlighted as config.
+- **Correct permutation config:** `<minsize=…;sep=…>` is config — case-insensitive keys,
+  quote-aware values (`<sep="a>b">` is one config), blanks allowed after the `[` — while
+  HTML inside items (`[<li>a</li>|b]`, `[<a href="/x">…</a>|b]`, even a key-shaped
+  attribute like `[<li data-sep=1>…</li>|b]`) is content, not mis-highlighted as config.
   Genuine separators (`[<and>a|b]`, `[a<, >|b]`) are highlighted.
+- **Engine-true trailing separators:** recognised exactly where the engine extracts them —
+  before a `|`, never before the closing `]` — including literal brace separators
+  (`[x<{a|b}>|y]`), while HTML-ish forms (`[a</b>|c]`, `[a<br/>|c]`) stay content.
+- Directives highlight after closed inline comments on the same logical line
+  (`/# note #/#set %x% = 1`), because the engine strips comments before reading directives.
 - Strict conditional / plural openers — `{??x}` and `{plural noun}` are *not* mis-highlighted.
 - Block-comment toggle (`/# … #/`) and auto-closing of `{}`, `[]`, `%%`, `""`.
 
@@ -68,6 +81,7 @@ scope assertions in [`tests/`](./tests). It mirrors the Sublime Text package
 
 ## Related
 
+- 🖥️ Spintax Studio, the desktop editor — [Microsoft Store](https://apps.microsoft.com/detail/9mw3ch7b530p) · [source](https://github.com/investblog/spintax-studio)
 - 📖 Syntax reference — <https://spintax.net/docs/syntax>
 - 🧪 Live playground — <https://spintax.net/play/>
 - 📦 Engine (`@spintax/core`) — <https://www.npmjs.com/package/@spintax/core>
