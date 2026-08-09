@@ -4,8 +4,8 @@
   "scopeName": "source.spintax",
   "fileTypes": ["spintax", "gtw"],
   "patterns": [
-    { "include": "#comments" },
     { "include": "#directives" },
+    { "include": "#comments" },
     { "include": "#vars" },
     { "include": "#conditionals" },
     { "include": "#plurals" },
@@ -15,8 +15,8 @@
   "repository": {
     "nested": {
       "patterns": [
-        { "include": "#comments" },
         { "include": "#directives" },
+        { "include": "#comments" },
         { "include": "#vars" },
         { "include": "#conditionals" },
         { "include": "#plurals" },
@@ -39,26 +39,22 @@
     },
 
     "directives": {
+      "comment": "The engine strips comments BEFORE extracting directives, so a directive is anchored to the LOGICAL line: closed /#…#/ comments (and blanks) before the keyword do not unmake it. The tempered dot (?:(?!#/).)* keeps one comment from swallowing text between two comments — 'text' between them means the logical line has content and the directive claim would be false. A comment still OPEN from an earlier line is not claimable line-locally: that case stays unpainted (under-claim, never over-claim).",
       "patterns": [
         {
-          "match": "^([ \\t]*)(#set)[ \\t]+(%[A-Za-z0-9_]+%)[ \\t]*(=)",
+          "comment": "#set and #def share one rule: the keyword tail (capture 3) is substituted into the scope name, so themes still see keyword.control.directive.set.spintax / .def.spintax as two distinct scopes.",
+          "match": "^([ \\t]*(?:/#(?:(?!#/).)*#/[ \\t]*)*)(#(set|def))[ \\t]+(%[A-Za-z0-9_]+%)[ \\t]*(=)",
           "captures": {
-            "2": { "name": "keyword.control.directive.set.spintax" },
-            "3": { "name": "entity.name.variable.spintax" },
-            "4": { "name": "keyword.operator.assignment.spintax" }
+            "1": { "patterns": [{ "include": "#comments" }] },
+            "2": { "name": "keyword.control.directive.$3.spintax" },
+            "4": { "name": "entity.name.variable.spintax" },
+            "5": { "name": "keyword.operator.assignment.spintax" }
           }
         },
         {
-          "match": "^([ \\t]*)(#def)[ \\t]+(%[A-Za-z0-9_]+%)[ \\t]*(=)",
+          "match": "^([ \\t]*(?:/#(?:(?!#/).)*#/[ \\t]*)*)(#include)[ \\t]+(\"[^\"]*\")",
           "captures": {
-            "2": { "name": "keyword.control.directive.def.spintax" },
-            "3": { "name": "entity.name.variable.spintax" },
-            "4": { "name": "keyword.operator.assignment.spintax" }
-          }
-        },
-        {
-          "match": "^([ \\t]*)(#include)[ \\t]+(\"[^\"]*\")",
-          "captures": {
+            "1": { "patterns": [{ "include": "#comments" }] },
             "2": { "name": "keyword.control.directive.include.spintax" },
             "3": { "name": "string.quoted.double.include.spintax" }
           }
@@ -135,23 +131,26 @@
     "perm-config": {
       "patterns": [
         {
-          "comment": "key=value config, anchored (\\G) to the very start of the permutation body",
-          "begin": "\\G<(?=[^<>]*\\b(?:minsize|maxsize|sep|lastsep)\\s*=)",
-          "beginCaptures": { "0": { "name": "punctuation.section.angle.begin.spintax" } },
-          "end": ">",
-          "endCaptures": { "0": { "name": "punctuation.section.angle.end.spintax" } },
-          "name": "meta.permutation.config.spintax",
-          "patterns": [
-            { "match": "\\b(?:minsize|maxsize|sep|lastsep)\\b", "name": "variable.parameter.spintax" },
-            { "match": "=", "name": "keyword.operator.assignment.spintax" },
-            { "match": "\"[^\"]*\"", "name": "string.quoted.double.spintax" },
-            { "match": "\\d+", "name": "constant.numeric.spintax" },
-            { "match": ";", "name": "punctuation.separator.config.spintax" }
-          ]
+          "comment": "key=value config, anchored (\\G) to the start of the permutation body, single-line (matching the studio tokenizer's line-local rule). Leading blanks allowed but kept OUTSIDE the meta scope: the engine ltrims them out of the config. Keys are matched case-insensitively with the engine's own boundary rule (HasConfigKey: \\b before the key, so data-sep= is a key and xminsize= is not). The body is quote-aware end to end — a '>' inside quotes does not close it (engine finds the first UNQUOTED '>') — but no bracket may appear anywhere in it, quoted or not: the engine's FindMatchingClose is a plain counter, so a ']' even inside quotes has already ended the permutation body before the config parser ever ran. An HTML start tag is refused FIRST, as the engine refuses it before the key check — <li data-sep=1>…</li> is content, key-shaped attribute and all.",
+          "match": "\\G([ \\t]*)((<)(?!([A-Za-z][A-Za-z0-9-]*)(?:[ \\t]+[^>]*)?(?:/>|>[^\\]]*</\\4\\s*>))(?=(?:[^<>\"\\[\\]]|\"[^\"\\[\\]]*\")*\\b(?i:minsize|maxsize|sep|lastsep)\\s*=)((?:[^<>\"\\[\\]]|\"[^\"\\[\\]]*\")*)(>))",
+          "captures": {
+            "2": { "name": "meta.permutation.config.spintax" },
+            "3": { "name": "punctuation.section.angle.begin.spintax" },
+            "5": {
+              "patterns": [
+                { "match": "\\b(?i:minsize|maxsize|sep|lastsep)\\b", "name": "variable.parameter.spintax" },
+                { "match": "=", "name": "keyword.operator.assignment.spintax" },
+                { "match": "\"[^\"]*\"", "name": "string.quoted.double.spintax" },
+                { "match": "\\d+", "name": "constant.numeric.spintax" },
+                { "match": ";", "name": "punctuation.separator.config.spintax" }
+              ]
+            },
+            "6": { "name": "punctuation.section.angle.end.spintax" }
+          }
         },
         {
-          "comment": "Leading single-separator <X>, start-anchored. A separator UNLESS X is an HTML start tag: self-closing <x/>, or <tag …> with a matching </tag> before the ']' (engine looksLikeHtmlStartTag). So <, >, <->, and <and> (no </and>) ARE separators; <li>…</li> and <a href=…>…</a> are not.",
-          "match": "\\G(<)(?!([A-Za-z][A-Za-z0-9-]*)(?:\\s+[^>]*)?(?:/>|>[^\\]]*</\\2\\s*>))([^<>]*)(>)",
+          "comment": "Leading single-separator <X>, start-anchored, leading blanks allowed (the engine ltrims first). A separator UNLESS X is an HTML start tag: self-closing <x/>, or <tag …> with a matching </tag> before the ']' (engine looksLikeHtmlStartTag). So <, >, <->, and <and> (no </and>) ARE separators; <li>…</li> and <a href=…>…</a> are not. The inner uses the same quote-aware, bracket-refusing atoms as the key-form rule above, for the same two engine reasons: the closing '>' is the first UNQUOTED one, and any ']' — quoted or not — has already ended the permutation body.",
+          "match": "\\G[ \\t]*(<)(?!([A-Za-z][A-Za-z0-9-]*)(?:\\s+[^>]*)?(?:/>|>[^\\]]*</\\2\\s*>))((?:[^<>\"\\[\\]]|\"[^\"\\[\\]]*\")*)(>)",
           "captures": {
             "1": { "name": "punctuation.section.angle.begin.spintax" },
             "3": { "name": "string.unquoted.separator.spintax" },
@@ -162,8 +161,8 @@
     },
 
     "perm-trailing-sep": {
-      "comment": "Per-element trailing separator <X> right before '|' or ']' (engine extractTrailingSep). A separator unless X is </x>, <x/>, or <tag …> (tag-with-attrs). Note bare <li> trailing IS a separator here — unlike a leading <li>…</li>.",
-      "match": "(<)(?!/)(?![A-Za-z][A-Za-z0-9]*\\s)([^<>]*[^<>/])(>)(?=[ \\t]*[|\\]])",
+      "comment": "Per-element trailing separator <X> right before '|' ONLY (engine extractTrailingSep): the engine extracts it for every part but the LAST, so a <X> before the closing ']' belongs to the last element and stays text. The engine's HTML exclusions apply to the TRIMMED inner — starts with '/', ends with '/', or tag-name-then-whitespace-then-content — so < /b>, <b/ > and < li x> are refused (all three lookaheads skip blanks), while <li > and < > ARE separators, exactly as the engine renders them. X may not contain a TOP-LEVEL '|' or an unbalanced bracket: the engine splits the permutation into parts FIRST (SplitTopLevel, brace/bracket counters), so the '|' in [a< | >|b] is a part boundary and the ']' in [A<]>|B] really closes the permutation — but one level of balanced {…} or […] is admitted, because the split counters pass over it and the engine takes <{a|b}> as a literal separator (rendered verbatim, not re-parsed). Deeper nesting inside a separator is under-claimed — a missing colour, never a wrong one.",
+      "match": "(<)(?![ \\t\\x0B\\x0C]*/)(?![ \\t\\x0B\\x0C]*[A-Za-z][A-Za-z0-9]*[ \\t\\x0B\\x0C]+[^<> \\t\\x0B\\x0C])(?!(?:[^<>|{}\\[\\]]|\\{[^{}<>]*\\}|\\[[^\\[\\]<>]*\\])*/[ \\t\\x0B\\x0C]*>)((?:[^<>|{}\\[\\]]|\\{[^{}<>]*\\}|\\[[^\\[\\]<>]*\\])*)(>)(?=[ \\t\\x0B\\x0C]*\\|)",
       "captures": {
         "1": { "name": "punctuation.section.angle.begin.spintax" },
         "2": { "name": "string.unquoted.separator.spintax" },

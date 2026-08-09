@@ -37,3 +37,78 @@
 //  ^ punctuation.section.angle.begin.spintax
 //   ^^^ string.unquoted.separator.spintax
 //      ^ punctuation.section.angle.end.spintax
+
+  [a|b<hr>]
+//    ^^^^ - string.unquoted.separator.spintax
+//        ^ punctuation.section.brackets.end.spintax
+
+  [a< | >|b]
+//  ^ - punctuation.section.angle.begin.spintax
+//    ^ punctuation.separator.spintax
+//       ^ punctuation.separator.spintax
+
+  [A<]>|B]
+//  ^ - string.unquoted.separator.spintax
+//  ^ - punctuation.section.angle.begin.spintax
+//   ^ punctuation.section.brackets.end.spintax
+//     ^ - meta.permutation.spintax
+
+  [ <sep=", ">a|b]
+//  ^ punctuation.section.angle.begin.spintax
+//   ^^^ variable.parameter.spintax
+//           ^ punctuation.section.angle.end.spintax
+
+  [ <, >a|b]
+//  ^ punctuation.section.angle.begin.spintax
+//   ^^ string.unquoted.separator.spintax
+//     ^ punctuation.section.angle.end.spintax
+
+  [<SEP=", ">a|b]
+//  ^^^ variable.parameter.spintax
+//     ^ keyword.operator.assignment.spintax
+
+  [<sep="a>b">x|y]
+//      ^^^^^ string.quoted.double.spintax
+//        ^ - punctuation.section.angle.end.spintax
+//           ^ punctuation.section.angle.end.spintax
+
+  [x<{a|b}>|y]
+//  ^ punctuation.section.angle.begin.spintax
+//   ^^^^^ string.unquoted.separator.spintax
+//        ^ punctuation.section.angle.end.spintax
+
+  [x<[a]>|y]
+//   ^^^ string.unquoted.separator.spintax
+
+  [a< /b>|c]
+//  ^ - punctuation.section.angle.begin.spintax
+
+  [a<b/ >|c]
+//  ^ - punctuation.section.angle.begin.spintax
+
+  [a< li x>|c]
+//  ^ - punctuation.section.angle.begin.spintax
+
+  [a<li >|c]
+//  ^ punctuation.section.angle.begin.spintax
+//   ^^^ string.unquoted.separator.spintax
+
+  [<sep=x]y>done]
+// ^ - meta.permutation.config.spintax
+//  ^^^ - variable.parameter.spintax
+//       ^ punctuation.section.brackets.end.spintax
+
+  [<"a>b";sep=1>x|y]
+// ^ punctuation.section.angle.begin.spintax
+//  ^^^^^ string.quoted.double.spintax
+//        ^^^ variable.parameter.spintax
+//             ^ punctuation.section.angle.end.spintax
+
+  [<li data-sep=1>x</li>|b]
+// ^ - meta.permutation.config.spintax
+// ^ - punctuation.section.angle.begin.spintax
+//          ^^^ - variable.parameter.spintax
+
+  [ <sep=", ">a|b]
+// ^ - meta.permutation.config.spintax
+//  ^ meta.permutation.config.spintax

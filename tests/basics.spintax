@@ -44,6 +44,23 @@
 //^^^^^^^^ keyword.control.directive.include.spintax
 //         ^^^ string.quoted.double.include.spintax
 
+  /# c #/#set %x% = 1
+//^^ punctuation.definition.comment.begin.spintax
+//   ^ comment.block.spintax
+//       ^^^^ keyword.control.directive.set.spintax
+//            ^^^ entity.name.variable.spintax
+//                ^ keyword.operator.assignment.spintax
+
+  /# c #/ #def %v% = x
+//        ^^^^ keyword.control.directive.def.spintax
+
+  /# a #/ text /# b #/#set %x% = 1
+//                    ^^^^ - keyword.control.directive.set.spintax
+
+/# c #/#set %x% = 1
+// <- punctuation.definition.comment.begin.spintax
+//     ^^^^ keyword.control.directive.set.spintax
+
   /# hi #/
 //^^ punctuation.definition.comment.begin.spintax
 //   ^ comment.block.spintax
