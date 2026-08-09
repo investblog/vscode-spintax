@@ -8,8 +8,7 @@
 
 Syntax highlighting for [**spintax**](https://spintax.net) templates in Visual Studio Code —
 engine-accurate against the [`@spintax/core`](https://www.npmjs.com/package/@spintax/core)
-contract and verified headlessly with `vscode-tmgrammar-test`. Applies to `.spintax` and
-`.gtw` files.
+contract and verified headlessly with `vscode-tmgrammar-test`. Applies to `.spintax` files.
 
 > Prefer a dedicated workspace? [**Spintax Studio**](https://apps.microsoft.com/detail/9mw3ch7b530p)
 > is a native desktop editor for spintax — source and live preview side by side, validation

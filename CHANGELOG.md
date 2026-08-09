@@ -3,6 +3,24 @@
 All notable changes to the Spintax VS Code extension are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.2.0 — 2026-08-09
+
+### Changed
+
+- The extension no longer claims the `.gtw` extension; it applies to `.spintax`
+  only. `.gtw` belongs to Generating The Web — the 2009 application this syntax
+  was originally based on — and is a container format rather than raw template
+  text, so highlighting it as spintax was wrong. The Modern Spintax Engine has
+  its own standard, and `.spintax` is its canonical extension. The Sublime Text
+  sibling dropped it in its own 1.2.0; this brings the two back in step
+  (closes #1).
+- README drops the remaining `.gtw` wording.
+
+If you have `.gtw` files you still want highlighted as spintax, map them in your
+own settings rather than relying on the extension:
+
+    "files.associations": { "*.gtw": "spintax" }
+
 ## 1.1.1 — 2026-08-09
 
 Parity fixes against the engine, prompted by a rule-by-rule comparison with
